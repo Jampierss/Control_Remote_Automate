@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Media Remote</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="remote">
+    <div class="remote-header">
+      <span class="brand">&#9654; Media Remote</span>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="pc">PC</button>
+        <button class="tab-btn" data-tab="tv">TV (LG)</button>
+      </div>
+    </div>
+
+    <!-- Voice (shared) -->
+    <section class="voice-section">
+      <button id="voiceBtn" class="voice-btn">
+        <span class="mic-icon">&#127908;</span>
+        <span id="voiceLabel">Voice Command</span>
+      </button>
+      <div id="voiceStatus" class="voice-status">Say: play, pause, next, volume up&hellip;</div>
+      <div class="voice-mode">
+        <label>
+          <input type="checkbox" id="whisperToggle" />
+          Use server-side Whisper
+        </label>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ── PC TAB ─────────────────────────────────────────────────── -->
+    <div id="tab-pc" class="tab-pane active">
+
+      <section class="transport">
+        <button class="btn btn-icon" onclick="cmd('previous')">&#9664;&#9664;</button>
+        <button class="btn btn-icon btn-primary" onclick="cmd('play_pause')">&#9654;&#9646;&#9646;</button>
+        <button class="btn btn-icon" onclick="cmd('next')">&#9654;&#9654;</button>
+      </section>
+
+      <section class="seek-row">
+        <button class="btn btn-seek" onclick="cmd('backward')">&larr; 10s</button>
+        <button class="btn btn-seek" onclick="cmd('forward')">10s &rarr;</button>
+      </section>
+
+      <div class="divider"></div>
+
+      <section class="volume-row">
+        <button class="btn btn-vol" onclick="cmd('mute')">&#128263;</button>
+        <button class="btn btn-vol" onclick="cmd('volume_down')">&#9660; Vol</button>
+        <button class="btn btn-vol" onclick="cmd('volume_up')">&#9650; Vol</button>
+      </section>
+
+      <div class="divider"></div>
+
+      <section class="nav-pad">
+        <button class="btn btn-nav nav-up" onclick="cmd('nav_up')">&#9650;</button>
+        <div class="nav-middle">
+          <button class="btn btn-nav nav-left" onclick="cmd('nav_left')">&#9664;</button>
+          <button class="btn btn-nav nav-ok" onclick="cmd('ok')">OK</button>
+          <button class="btn btn-nav nav-right" onclick="cmd('nav_right')">&#9654;</button>
+        </div>
+        <button class="btn btn-nav nav-down" onclick="cmd('nav_down')">&#9660;</button>
+      </section>
+
+      <div class="divider"></div>
+
+      <section class="utility-row">
+        <button class="btn btn-util" onclick="cmd('fullscreen')">&#x26F6; Fullscreen</button>
+        <button class="btn btn-util" onclick="cmd('escape')">ESC</button>
+      </section>
+
+    </div>
+
+    <!-- ── TV TAB ─────────────────────────────────────────────────── -->
+    <div id="tab-tv" class="tab-pane">
+
+      <section class="tv-settings-panel">
+        <input id="tvIp"  class="tv-input" type="text" placeholder="TV IP address (e.g. 192.168.1.100)" />
+        <input id="tvMac" class="tv-input" type="text" placeholder="MAC address for power on (AA:BB:CC:DD:EE:FF)" />
+        <button class="btn btn-primary btn-full" onclick="pairTv()">Connect &amp; Pair TV</button>
+        <div id="tvStatus" class="voice-status"></div>
+      </section>
+
+      <div class="divider"></div>
+
+      <section class="tv-row">
+        <button class="btn btn-tv" onclick="tvCmd('power_on')">&#9211; Power On</button>
+        <button class="btn btn-tv btn-danger" onclick="tvCmd('power_off')">&#9211; Power Off</button>
+      </section>
+
+      <div class="divider"></div>
+
+      <section class="tv-row">
+        <button class="btn btn-tv" onclick="tvCmd('mute')">&#128263; Mute</button>
+        <button class="btn btn-tv" onclick="tvCmd('volume_down')">&#9660; Vol</button>
+        <button class="btn btn-tv" onclick="tvCmd('volume_up')">&#9650; Vol</button>
+      </section>
+
+      <section class="tv-row">
+        <button class="btn btn-tv" onclick="tvCmd('channel_down')">&#9660; Ch</button>
+        <button class="btn btn-tv" onclick="tvCmd('channel_up')">&#9650; Ch</button>
+      </section>
+
+      <div class="divider"></div>
+
+      <section class="transport">
+        <button class="btn btn-icon" onclick="tvCmd('rewind')">&#9664;&#9664;</button>
+        <button class="btn btn-icon" onclick="tvCmd('play')">&#9654;</button>
+        <button class="btn btn-icon btn-primary" onclick="tvCmd('pause')">&#9646;&#9646;</button>
+        <button class="btn btn-icon" onclick="tvCmd('stop')">&#9632;</button>
+        <button class="btn btn-icon" onclick="tvCmd('fast_forward')">&#9654;&#9654;</button>
+      </section>
+
+      <section class="nav-pad">
+        <button class="btn btn-nav nav-up"    onclick="tvButton('UP')">&#9650;</button>
+        <div class="nav-middle">
+          <button class="btn btn-nav nav-left"  onclick="tvButton('LEFT')">&#9664;</button>
+          <button class="btn btn-nav nav-ok"    onclick="tvButton('ENTER')">OK</button>
+          <button class="btn btn-nav nav-right" onclick="tvButton('RIGHT')">&#9654;</button>
+        </div>
+        <button class="btn btn-nav nav-down"  onclick="tvButton('DOWN')">&#9660;</button>
+      </section>
+
+      <section class="tv-row">
+        <button class="btn btn-tv" onclick="tvButton('BACK')">&#8592; Back</button>
+        <button class="btn btn-tv btn-full" onclick="tvCmd('home')">&#8962; Home</button>
+      </section>
+
+      <section class="tv-row">
+        <button class="btn btn-tv btn-crunchyroll btn-full" onclick="launchApp('com.crunchyroll.webapp', this)">
+          &#9654; Crunchyroll
+        </button>
+      </section>
+
+      <div class="divider"></div>
+
+      <section class="tv-inputs-section">
+        <div class="inputs-header">
+          <span class="inputs-label">Inputs</span>
+          <button class="btn-refresh" onclick="loadInputs()" title="Refresh inputs">&#8635;</button>
+        </div>
+        <div id="inputsList" class="inputs-list">
+          <span class="dim">Connect TV first, then click &#8635;</span>
+        </div>
+      </section>
+
+    </div>
+
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
