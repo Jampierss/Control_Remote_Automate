@@ -1,3 +1,12 @@
+import os
+
+if os.getenv("ENV") == "production":
+    def execute_command(cmd):
+        print(f"Mock command: {cmd}")
+else:
+    from pynput.keyboard import Key, Controller
+    keyboard = Controller()
+
 from pynput.keyboard import Key, Controller
 
 _keyboard = Controller()
