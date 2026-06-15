@@ -1,6 +1,6 @@
 import os
 
-if 1=1:
+if true:
     VALID_COMMANDS = {
         "play_pause",
         "next",
