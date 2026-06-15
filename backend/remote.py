@@ -1,6 +1,6 @@
 import os
 
-if os.getenv("ENV") == "production":
+if 1=1:
     VALID_COMMANDS = {
         "play_pause",
         "next",
